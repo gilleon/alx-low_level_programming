@@ -1,16 +1,13 @@
 #include "main.h"
 
 /**
-* mul - multiple integers or checks for the two integers
-* @a: a - Variable
-* @b: b - variable
-*/
+ * mul - function that multiplies two integers.
+ * @a: first input value to check
+ * @b: Sec input value to check
+ * Return: int.
+ */
 
 int mul(int a, int b)
 {
-	int mul;
-
-	mul = a * b;
-
-	return (mul);
+	return (a * b);
 }
