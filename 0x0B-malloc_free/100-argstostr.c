@@ -1,43 +1,62 @@
+#include <stdlib.h>
 #include "main.h"
+
 /**
- * argstostr - prints args
- * @ac: takes in width of grid
- * @av: height of grid
- * Return: the args one line at a time
+ * _strlen - returns the length of a string
+ * @s: string we find the length of
+ *
+ * Return: length of the string
+ */
+
+int _strlen(char *s)
+{
+	int x = 0;
+
+	while (*(s + x) != '\0')
+		x++;
+	return (x);
+}
+
+/**
+ * argstostr - concatenates all the arguments of the program
+ * @ac: number of arguments
+ * @av: array of arguments
+ *
+ * Return: returns a pointer to the concatenated string
  */
 
 char *argstostr(int ac, char **av)
 {
-	char *str;
-	int count = 0, a = 0, b = 0, c = 0;
+	int x, y, z, length;
+	char *s;
+
+	length = 1;
+	z = 0;
 
 	if (ac == 0 || av == NULL)
 		return (NULL);
-	while (a < ac)
+
+	for (x = 0; x < ac; x++)
 	{
-		b = 0;
-		while (av[a][b] != '\0')
-		{
-			count++;
-			b++;
-		}
-		a++;
+		length += _strlen(av[x]) + 1;
 	}
-	count = count + ac + 1;
-	str = malloc(sizeof(char) * count);
-	if (str == NULL)
+
+	s = malloc(sizeof(char) * length);
+	if (s == NULL)
 	{
 		return (NULL);
 	}
-	for (a = 0; a < ac; a++)
+
+	for (x = 0; x < ac; x++)
 	{
-		for (b = 0; av[a][b] != '\0'; b++)
+		for (y = 0; y < _strlen(av[x]); y++)
 		{
-			str[c] = av[a][b];
-			c++;
+			s[z] = av[x][y];
+			z++;
 		}
-		str[c] = '\n';
-		c++;
+		s[z] = '\n';
+		z++;
 	}
-	return (str);
+	s[z] = '\0';
+	return (s);
 }
