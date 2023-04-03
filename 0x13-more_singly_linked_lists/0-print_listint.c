@@ -2,17 +2,15 @@
 #include <stdio.h>
 
 /**
- * print_listint - print all elements of a `listint_t` list
+ * print_listint 
  * @h: linked list head
- * Return: number of nodes
+ * Return: number of nodes in list
  */
 size_t print_listint(const listint_t *h)
 {
-	const listint_t *c;
-	size_t count;
+	size_t counter;
+	for (counter = 0; h != NULL; counter++, h = h->next)
+		printf("%d\n", h->n);
 
-	for (c = h, count = 0; c != NULL; count++, c = c->next)
-		printf("%d\n", c->n);
-
-	return (count);
+	return (counter);
 }

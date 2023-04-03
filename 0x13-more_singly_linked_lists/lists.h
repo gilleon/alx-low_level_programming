@@ -5,9 +5,6 @@
  * struct listint_s - singly linked list
  * @n: integer
  * @next: points to the next node
- *
- * Description: singly linked list node structure
- * for Holberton project
  */
 typedef struct listint_s
 {
@@ -24,16 +21,7 @@ void free_listint2(listint_t **head);
 int pop_listint(listint_t **head);
 listint_t *get_nodeint_at_index(listint_t *head, unsigned int index);
 int sum_listint(listint_t *head);
-
-/**
- * insert_nodeint_at_index - insert node at given index of linked list
- * @head: double header head
- * @index: where to insert node
- * @n: value to store in node
- * Return: new node or null if failed
- */
-listint_t *insert_nodeint_at_index(listint_t **head,
-				   unsigned int index, int n);
+listint_t *insert_nodeint_at_index(listint_t **head, unsigned int index, int n);
 int delete_nodeint_at_index(listint_t **head, unsigned int index);
 listint_t *reverse_listint(listint_t **head);
 size_t print_listint_safe(const listint_t *head);
