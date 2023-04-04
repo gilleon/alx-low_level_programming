@@ -1,53 +1,38 @@
 #include "lists.h"
 
 /**
- * checkLoop - function to checks if the linked list has not looped
+ * print_listint_safe - prints a listint_t linked list
  *
- * @begin: the begining argv
- * @node: the current node argv
- * @i: the current postion argv
- *
- * Return: 1 if loop return true, 0 if there is a loop
- */
-
-size_t checkLoop(const listint_t *begin, const listint_t *node, size_t i)
-{
-	size_t check = 0;
-
-	while (begin != node)
-	{
-		begin = begin->next;
-		check++;
-	}
-
-	return ((check == i) ? 1 : 0);
-}
-
-/**
- * print_listint_safe - function that prints a listint_t linked list
- *
- * @head: the listint_t argv
+ * @head: the listint_t argument (head)
  *
  * Return: the number of nodes in the list
  */
 
 size_t print_listint_safe(const listint_t *head)
 {
-	size_t count = 0;
-	const listint_t *begin = head;
+	const listint_t *curr, *contend;
+	size_t counter, i;
 
-	if (head)
+	curr = head;
+	counter = 0;
+
+	while (curr != NULL)
 	{
-		while (head && checkLoop(begin, head, count))
+		contend = head;
+		for (i = 0; i < counter; i++)
 		{
-			printf("[%p] %d\n", (void *)head, head->n);
-			head = head->next;
+			if (contend == curr)
+			{
+				printf("-> [%p] %d\n", (void *)curr, curr->n);
+				return (counter);
+			}
 
-			count++;
+			contend = contend->next;
 		}
-
-		if (head)
-			printf("-> [%p] %d\n", (void *)head, head->n);
+		printf("[%p] %d\n", (void *)curr, curr->n);
+		curr = curr->next;
+		counter++;
 	}
-	return (count);
+
+	return (counter);
 }
