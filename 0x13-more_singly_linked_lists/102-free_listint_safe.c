@@ -3,37 +3,29 @@
 /**
  * free_listint_safe - function can free lists with a loop
  *
- * @head: the listint_t argv
+ * @h: the listint_t argv
  *
  * Return: the size of the list that was free’d
  */
 
-size_t	free_listint_safe(listint_t **head)
+size_t free_listint_safe(listint_t **h)
 {
-	size_t counter = 0, i = 0;
-	listint_t *begin = *head, *tmp;
+	listint_t *curr, *hold;
+	size_t count;
 
-	if (*head)
+	counter = 0;
+	curr = *h;
+	while (curr != NULL)
 	{
-		while (*head && checkLoop(begin, *head, counter))
-		{
-			tmp = (*head)->next;
-			*head = tmp;
+		counter++;
+		hold = curr;
+		curr = curr->next;
+		free(hold);
 
-			counter++;
-		}
-
-		*head = begin;
-		while (i < counter)
-		{
-			tmp = (*head)->next;
-			free(*head);
-			*head = tmp;
-			i++;
-		}
-
-		if (*head)
-			*head = NULL;
+		if (hold < curr)
+			break;
 	}
+	*h = NULL;
+
 	return (counter);
 }
