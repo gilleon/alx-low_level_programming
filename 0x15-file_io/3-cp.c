@@ -17,36 +17,25 @@ int main(int argv, char *args[])
 
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 	if (argv != 3)
-	{
-		dprintf(SE, "Usage: cp file_from file_to\n");
-		exit(97);
-	}
+		dprintf(SE, "Usage: cp file_from file_to\n"), exit(97);
 	input_fd = open(args[1], O_RDONLY);
 	if (input_fd == -1)
-	{
-		dprintf(SE, "Error: Can't read from file %s\n", args[1]);
-		exit(98);
-	}
+		dprintf(SE, "Error: Can't read from file %s\n", args[1]), exit(98);
 	output_fd = open(args[2], O_CREAT | O_WRONLY | O_TRUNC, mode);
 	if (output_fd == -1)
-	{
-		dprintf(SE, "Error: Can't write to %s\n", args[2]);
-		exit(99);
-	}
+		dprintf(SE, "Error: Can't write to %s\n", args[2]), exit(99);
 	do {
 		istatus = read(input_fd, buf, MAXSIZE);
 		if (istatus == -1)
 		{
-			dprintf(SE, "Error: Can't read from file %s\n", args[1]);
-			exit(98);
+			dprintf(SE, "Error: Can't read from file %s\n", args[1]), exit(98);
 		}
 		if (istatus > 0)
 		{
 			ostatus = write(output_fd, buf, (ssize_t) istatus);
 			if (ostatus == -1)
 			{
-				dprintf(SE, "Error: Can't write to %s\n", args[2]);
-				exit(99);
+				dprintf(SE, "Error: Can't write to %s\n", args[2]), exit(99);
 			}
 		}
 	} while (istatus > 0);
