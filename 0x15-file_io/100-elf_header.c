@@ -5,35 +5,35 @@
 #include <unistd.h>
 
 /**
- * _strncmp - compare two strings
- * @s1: the first string
- * @s2: the second string
- * @n: the max number of bytes to compare
+ * _stringCompare - compare two strings
+ * @string1: the first string argv
+ * @string2: the second string argv
+ * @numb: the max number of bytes to compare
  *
- * Return: 0 if the first n bytes of s1 and s2 are equal, otherwise non-zero
+ * Return: 0 if the first numb bytes of string1 and string2 are equal, else 0
  */
-int _strncmp(const char *s1, const char *s2, size_t n)
+int _stringCompare(const char *string1, const char *string2, size_t numb)
 {
-	for ( ; n && *s1 && *s2; --n, ++s1, ++s2)
+	for ( ; numb && *string1 && *string2; --numb, ++string1, ++string2)
 	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
+		if (*string1 != *string2)
+			return (*string1 - *string2);
 	}
-	if (n)
+	if (numb)
 	{
-		if (*s1)
+		if (*string1)
 			return (1);
-		if (*s2)
+		if (*string2)
 			return (-1);
 	}
 	return (0);
 }
 
 /**
- * _close - close a file descriptor and print an error message upon failure
+ * _closeFile - close a file descriptor exception
  * @fd: the file descriptor to close
  */
-void _close(int fd)
+void _closeFile(int fd)
 {
 	if (close(fd) != -1)
 		return;
@@ -42,29 +42,29 @@ void _close(int fd)
 }
 
 /**
- * _read - read from a file and print an error message upon failure
+ * _readFile - read from a file exception
  * @fd: the file descriptor to read from
- * @buf: the buffer to write to
- * @count: the number of bytes to read
+ * @butter: the buffer to write to
+ * @counter: the number of bytes to read
  */
-void _read(int fd, char *buf, size_t count)
+void _readFile(int fd, char *butter, size_t counter)
 {
-	if (read(fd, buf, count) != -1)
+	if (read(fd, butter, counter) != -1)
 		return;
 	write(STDERR_FILENO, "Error: Can't read from file\n", 28);
-	_close(fd);
+	_closeFile(fd);
 	exit(98);
 }
 
 /**
  * elf_magic - print ELF magic
- * @buffer: the ELF header
+ * @buffer: the ELF header argv
  */
 void elf_magic(const unsigned char *buffer)
 {
 	unsigned int i;
 
-	if (_strncmp((const char *) buffer, ELFMAG, 4))
+	if (_stringCompare((const char *) buffer, ELFMAG, 4))
 	{
 		write(STDERR_FILENO, "Error: Not an ELF file\n", 23);
 		exit(98);
@@ -139,10 +139,10 @@ void elf_version(const unsigned char *buffer)
 }
 
 /**
- * elf_osabi - print ELF OS/ABI
+ * elf_sabi - print ELF OS/ABI
  * @buffer: the ELF header
  */
-void elf_osabi(const unsigned char *buffer)
+void elf_sabi(const unsigned char *buffer)
 {
 	const char *os_table[19] = {
 		"UNIX - System V",
@@ -217,12 +217,12 @@ void elf_type(const unsigned char *buffer, int big_endian)
 }
 
 /**
- * elf_entry - print entry point address
+ * elf_start - print entry point address
  * @buffer: string containing the entry point address
  * @bit_mode: bit mode (32 or 64)
  * @big_endian: endianness (big endian if non-zero)
  */
-void elf_entry(const unsigned char *buffer, size_t bit_mode, int big_endian)
+void elf_start(const unsigned char *buffer, size_t bit_mode, int big_endian)
 {
 	int address_size = bit_mode / 8;
 
@@ -256,47 +256,47 @@ void elf_entry(const unsigned char *buffer, size_t bit_mode, int big_endian)
 
 /**
  * main - copy a file's contents to another file
- * @argc: the argument count
- * @argv: the argument values
+ * @count: the argument count
+ * @val: the argument values
  *
  * Return: Always 0
  */
-int main(int argc, const char *argv[])
+int main(int count, const char *val[])
 {
 	unsigned char buffer[18];
 	unsigned int bit_mode;
 	int big_endian;
 	int fd;
 
-	if (argc != 2)
+	if (count != 2)
 	{
 		write(STDERR_FILENO, "Usage: elf_header elf_filename\n", 31);
 		exit(98);
 	}
 
-	fd = open(argv[1], O_RDONLY);
+	fd = open(val[1], O_RDONLY);
 	if (fd == -1)
 	{
 		write(STDERR_FILENO, "Error: Can't read from file\n", 28);
 		exit(98);
 	}
 
-	_read(fd, (char *) buffer, 18);
+	_readFile(fd, (char *) buffer, 18);
 
 	elf_magic(buffer);
 	bit_mode = elf_class(buffer);
 	big_endian = elf_data(buffer);
 	elf_version(buffer);
-	elf_osabi(buffer);
+	elf_sabi(buffer);
 	elf_abivers(buffer);
 	elf_type(buffer, big_endian);
 
 	lseek(fd, 24, SEEK_SET);
-	_read(fd, (char *) buffer, bit_mode / 8);
+	_readFile(fd, (char *) buffer, bit_mode / 8);
 
-	elf_entry(buffer, bit_mode, big_endian);
+	elf_start(buffer, bit_mode, big_endian);
 
-	_close(fd);
+	_closeFile(fd);
 
 	return (0);
 }
