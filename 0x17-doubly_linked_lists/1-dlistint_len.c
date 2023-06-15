@@ -5,7 +5,7 @@
 
 /**
  * dlistint_len - number of nodes in the linked list
- * @h: pointer to the 
+ * @h: pointer to the
  *
  * Return: number of nodes
  */
