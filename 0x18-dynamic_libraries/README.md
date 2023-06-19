@@ -1,0 +1,1 @@
+Statis and Dynamic Libraries
